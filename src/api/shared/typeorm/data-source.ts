@@ -1,6 +1,9 @@
 import {DataSource} from "typeorm";
 import dotenv from "dotenv";
 import reflect from "reflect-metadata";
+import Evento from "../../modules/eventos/entities/Eventos";
+import Usuario from "../../modules/usuario/typeorm/entities/Usuario";
+import Certificado from "../../modules/certificado/typeorm/entities/Certificado";
 dotenv.config(); //carregar as informações do arquivo .env file
 export const AppDataSource = new DataSource({
     type:"postgres",
@@ -10,5 +13,6 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     synchronize: true,
+    entities: [Evento,Usuario, Certificado], // indicando pro meu banco de dados quais entidades eu tenho
     logging: true
 });
