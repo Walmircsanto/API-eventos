@@ -6,6 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+//inicializar o banco de dados
 AppDataSource.initialize().then(r => {
     console.log("data source initialized");
 }).catch((err) =>{
