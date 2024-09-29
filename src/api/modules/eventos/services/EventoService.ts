@@ -3,15 +3,17 @@ import statusEvento from "../typeorm/entities/enums/EventoStatus";
 import AppError from "../../../shared/errors/AppError";
 import {EventoModelRepository} from "../../../shared/typeorm/data-source";
 
-
 interface IRequest{
-   id?: number,
    titulo:string,
    img:string,
    status: statusEvento,
    descricao:string,
    dataFim: Date,
    dataInicio: Date
+}
+
+interface IdRequest{
+    id: number
 }
 
 
@@ -41,7 +43,7 @@ class EventoService{
        return evento;
     }
 
-    public async updateEvento ({id,titulo, img, status, descricao, dataFim,dataInicio}: IRequest){
+    public async updateEvento ({titulo, img, status, descricao, dataFim,dataInicio }: IRequest,  {id}: IdRequest){
 
         const eventoRepository = EventoModelRepository;
 
@@ -55,8 +57,7 @@ class EventoService{
         const evento =  eventoRepository.create({
             id,titulo, img, status, descricao, dataFim,dataInicio
         })
-        // @ts-ignore
-        evento.id = id | null;
+        evento.id = id;
         evento.titulo = titulo;
         evento.img = img;
         evento.status = status;
@@ -67,7 +68,7 @@ class EventoService{
         return  await eventoRepository.save(evento);
     }
 
-    public async findById({id}: IRequest){
+    public async findById({id}: IdRequest){
         const eventoRepository = EventoModelRepository
 
         const evento = await eventoRepository.findOne({where:{id:id}});
@@ -80,4 +81,7 @@ class EventoService{
 
 
     }
+
 }
+
+export  default  EventoService;
