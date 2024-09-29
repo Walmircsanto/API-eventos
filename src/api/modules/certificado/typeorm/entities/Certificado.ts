@@ -7,7 +7,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import Evento from "../../../eventos/entities/Eventos";
+import Evento from "../../../eventos/typeorm/entities/Evento";
 
 @Entity()
 class Certificado {
