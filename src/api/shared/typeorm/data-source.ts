@@ -1,7 +1,7 @@
 import {DataSource} from "typeorm";
 import dotenv from "dotenv";
 import reflect from "reflect-metadata";
-import Evento from "../../modules/eventos/entities/Eventos";
+import Evento from "../../modules/eventos/typeorm/entities/Evento";
 import Usuario from "../../modules/usuario/typeorm/entities/Usuario";
 import Certificado from "../../modules/certificado/typeorm/entities/Certificado";
 dotenv.config(); //carregar as informações do arquivo .env file
@@ -16,3 +16,5 @@ export const AppDataSource = new DataSource({
     entities: [Evento,Usuario, Certificado], // indicando pro meu banco de dados quais entidades eu tenho
     logging: true
 });
+
+ export const EventoModelRepository =  AppDataSource.getRepository(Evento);
