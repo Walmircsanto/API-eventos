@@ -15,7 +15,7 @@ import Certificado from "../../../certificado/typeorm/entities/Certificado";
 @Entity()
 class Evento {
     @PrimaryGeneratedColumn('increment')
-    id: number;
+    id: number ;
 
     @Column()
     titulo: string;
