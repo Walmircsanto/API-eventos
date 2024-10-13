@@ -20,10 +20,10 @@ interface IdRequest{
 
 
 class EventoService{
+
+
     public async createEvento({titulo, img, status, descricao, dataFim, dataInicio}: IRequest){
-
         const eventoRepository = EventoModelRepository
-
        const eventExits = await eventoRepository.findOne({ where:{ titulo:titulo } });
 
        if(eventExits){
