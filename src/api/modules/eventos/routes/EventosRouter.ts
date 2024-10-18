@@ -6,5 +6,6 @@ const eventoController = new EventoController();
 
 eventosRouter.post("/", eventoController.createEvento);
 eventosRouter.get('/:id', eventoController.findById)
+eventosRouter.get('/', eventoController.findAll)
 
 export default eventosRouter;
