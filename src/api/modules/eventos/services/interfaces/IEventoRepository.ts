@@ -7,6 +7,6 @@ export default interface IEventoRepository {
     listEventos():Promise<Evento[] | null>
 
     findEventoById(id: number): Promise<Evento | null>
-    updateEvento(evento: IEventoRepository):Promise<Evento | null>
+    updateEvento(evento: EventoRequest):Promise<Evento | null>
     deleteEvento(idEvento:number):void
 }
