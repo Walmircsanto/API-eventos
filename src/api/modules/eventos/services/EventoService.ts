@@ -55,7 +55,7 @@ class EventoService {
     public async findById({id}: IdRequest) {
 
 
-        const evento = await this.eventoRepository.findOne({where: {id: id}});
+        const evento = await this.eventoRepository.findEventoById(id);
 
         if (!evento) {
             throw new AppError("Event not foud", "Bad request", 400);
