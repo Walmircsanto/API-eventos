@@ -29,11 +29,11 @@ export class EventoRepository implements IEventoRepository {
     }
 
     listEventos(): Promise<Evento[]> {
-        return Promise.resolve([]);
+        return this.ormRepository.find();
     }
 
-    updateEvento(evento: IEventoRepository): Promise<Evento> {
-        return Promise.resolve(undefined);
+    updateEvento(evento: EventoRequest): Promise<Evento> {
+      return null
     }
 
       async findEventoById(id: number): Promise<Evento | null> {
