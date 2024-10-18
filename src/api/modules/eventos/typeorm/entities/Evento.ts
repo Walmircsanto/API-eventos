@@ -40,11 +40,11 @@ class Evento {
     dataFim: Date;
 
     @OneToOne(() => Certificado)
-    certificado: Certificado
+    certificado : Certificado | null
 
     @ManyToMany(() => Usuario, { onDelete: 'CASCADE' })
     @JoinTable()
-    usuarios: Usuario[]
+    usuarios : Usuario[] | null
 
     @CreateDateColumn()
     @Exclude()

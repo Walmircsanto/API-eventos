@@ -1,17 +1,40 @@
+import 'reflect-metadata';
 import EventoService from '../services/EventoService'
 import { Request, Response } from 'express';
+import container from "../config/container";
+import {injectable} from "tsyringe";
+import EventoRequest from "../dto/EventoRequest";
+
+
+
+@injectable()
 export default  class EventoController {
 
-    // constructor(evento: EventoService) {
-    //     this.eventoService = evento;
-    // }
 
+    private eventoService = container.resolve(EventoService);
     public async createEvento(req: Request, res: Response): Promise<Response | undefined> {
-        const {titulo, img, status, descricao, dataFim, dataInicio} = req.body;
+        const {
+            titulo,
+            img,
+            status,
+            descricao,
+            dataInicio,
+            dataFim,
+            usuariosIds,
+            certificadoId
+        } = req.body;
 
-        const eventoService  = new EventoService()
-        const event = await eventoService.createEvento(
-            {titulo, img, status, descricao, dataFim, dataInicio} );
+        const event = await this.eventoService.createEvento(
+            {
+                titulo,
+                img,
+                status,
+                descricao,
+                dataInicio,
+                dataFim,
+                usuariosIds,
+                certificadoId
+            } );
 
 
         return res.status(200).json(event);
@@ -23,8 +46,8 @@ export default  class EventoController {
 
         const  id  = parseInt(req.params.id)
 
-        const eventoService  = new EventoService()
-        const event =  await eventoService.findById({id});
+
+        const event =  await this.eventoService.findById({id});
 
         return res.status(200).json(event);
     }

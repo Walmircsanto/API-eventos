@@ -1,80 +1,64 @@
-
+import 'reflect-metadata';
 import statusEvento from "../typeorm/entities/enums/EventoStatus";
 import AppError from "../../../shared/errors/AppError";
-import {EventoModelRepository} from "../../../shared/typeorm/data-source";
+import IEventoRepository from "./interfaces/IEventoRepository";
+import {inject, injectable} from "tsyringe";
+import {EventoRepository} from "../typeorm/repositories/EventoRepository";
+import EventoRequest from "../dto/EventoRequest";
 
-interface IRequest{
-   titulo:string,
-   img:string,
-   status: statusEvento,
-   descricao:string,
-   dataFim: Date,
-   dataInicio: Date
-}
-
-interface IdRequest{
+interface IdRequest {
     id: number
 }
 
 
+@injectable() // indica que a nossa classe recebe a injeção de dependendica
+class EventoService {
 
+    private eventoRepository: IEventoRepository
 
-class EventoService{
-
-
-    public async createEvento({titulo, img, status, descricao, dataFim, dataInicio}: IRequest){
-        const eventoRepository = EventoModelRepository
-       const eventExits = await eventoRepository.findOne({ where:{ titulo:titulo } });
-
-       if(eventExits){
-            throw new AppError("Evento ja existe com esse nome", "Bad request", 400);
-       }
-
-       const evento =  eventoRepository.create({
-           titulo,
-           img,
-           status,
-           descricao,
-           dataFim,
-           dataInicio
-       });
-
-       await eventoRepository.save(evento);
-       return evento;
+    constructor(@inject('EventoRepository') eventoRepository: IEventoRepository) {
+        this.eventoRepository = eventoRepository;
     }
 
-    public async updateEvento ({titulo, img, status, descricao, dataFim,dataInicio }: IRequest,  {id}: IdRequest){
+    public async createEvento({
+                                  titulo,
+                                  img,
+                                  status,
+                                  descricao,
+                                  dataInicio,
+                                  dataFim,
+                                  usuariosIds,
+                                  certificadoId
+                              }: EventoRequest) {
 
-        const eventoRepository = EventoModelRepository;
 
-        const eventExits = await eventoRepository.findOne({ where:{ titulo:titulo } });
+        // if (eventExits) {
+        //     throw new AppError("Evento ja existe com esse nome", "Bad request", 400);
+        // }
 
-
-        if(!eventExits){
-            throw new AppError("Evento não existente", "Bad request", 400);
-        }
-
-        const evento =  eventoRepository.create({
-            id,titulo, img, status, descricao, dataFim,dataInicio
+        const evento = await this.eventoRepository.createEvento(
+            {
+            titulo,
+            img,
+            status,
+            descricao,
+            dataInicio,
+            dataFim,
+            usuariosIds,
+            certificadoId
         })
-        evento.id = id;
-        evento.titulo = titulo;
-        evento.img = img;
-        evento.status = status;
-        evento.descricao = descricao;
-        evento.dataFim = dataFim;
-        evento.dataInicio = dataInicio;
-
-        return  await eventoRepository.save(evento);
+        return evento;
     }
 
-    public async findById({id}: IdRequest){
-        const eventoRepository = EventoModelRepository
 
-        const evento = await eventoRepository.findOne({where:{id:id}});
 
-        if(!evento){
-            throw  new AppError("Event not foud", "Bad request", 400);
+    public async findById({id}: IdRequest) {
+
+
+        const evento = await this.eventoRepository.findOne({where: {id: id}});
+
+        if (!evento) {
+            throw new AppError("Event not foud", "Bad request", 400);
         }
 
         return evento;
@@ -84,4 +68,4 @@ class EventoService{
 
 }
 
-export  default  EventoService;
+export default EventoService;

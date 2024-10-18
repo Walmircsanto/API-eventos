@@ -16,5 +16,3 @@ export const AppDataSource = new DataSource({
     entities: [Evento,Usuario, Certificado], // indicando pro meu banco de dados quais entidades eu tenho
     logging: true
 });
-
- export const EventoModelRepository =  AppDataSource.getRepository(Evento);

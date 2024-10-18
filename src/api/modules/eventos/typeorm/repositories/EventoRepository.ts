@@ -1,12 +1,38 @@
-import {EntityRepository, Repository} from 'typeorm';
-import {DataSource} from "typeorm";
+import {Repository} from 'typeorm';
+import IEventoRepository from "../../services/interfaces/IEventoRepository";
+import Evento from "../entities/Evento";
+import {AppDataSource} from "../../../../shared/typeorm/data-source";
+import EventoRequest from "../../dto/EventoRequest";
+import {EventoMapper} from "../../mapper/EventoMapper";
 
 
-// @EntityRepository(Evento)
-// export  default class EventoRepository extends Repository<Evento> {
-//
-//     public async findbyTitulo(titulo:string): Promise<Evento | null> {
-//         const evento = this.findOne({ where:{ titulo:titulo} });
-//         return evento;
-//     }
-// }
+export class EventoRepository implements IEventoRepository {
+
+    // A Repository<> e uma classe do proprio TypeORM que permite acesso a banco de dados
+    private ormRepository: Repository<Evento>;
+
+    constructor() {
+        this.ormRepository = AppDataSource.getRepository(Evento);
+    }
+
+    public async createEvento({ titulo, img, status, descricao, dataInicio, dataFim, usuariosIds, certificadoId}: EventoRequest): Promise<Evento> {
+
+        const event = EventoMapper.parserRequestInEvento({ titulo, img, status, descricao, dataInicio, dataFim, usuariosIds, certificadoId});
+
+        const evento = await this.ormRepository.save(event);
+
+        return evento;
+    }
+
+    deleteEvento(idEvento: number): void {
+    }
+
+    listEventos(): Promise<Evento[]> {
+        return Promise.resolve([]);
+    }
+
+    updateEvento(evento: IEventoRepository): Promise<Evento> {
+        return Promise.resolve(undefined);
+    }
+
+}
