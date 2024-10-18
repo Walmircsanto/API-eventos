@@ -38,18 +38,17 @@ class EventoService {
 
         const evento = await this.eventoRepository.createEvento(
             {
-            titulo,
-            img,
-            status,
-            descricao,
-            dataInicio,
-            dataFim,
-            usuariosIds,
-            certificadoId
-        })
+                titulo,
+                img,
+                status,
+                descricao,
+                dataInicio,
+                dataFim,
+                usuariosIds,
+                certificadoId
+            })
         return evento;
     }
-
 
 
     public async findById({id}: IdRequest) {
@@ -64,6 +63,12 @@ class EventoService {
         return evento;
 
 
+    }
+
+    public async findAllEventos(){
+        const eventos = await this.eventoRepository.listEventos();
+
+        return eventos;
     }
 
 }
