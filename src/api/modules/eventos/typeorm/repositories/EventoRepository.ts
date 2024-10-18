@@ -4,6 +4,7 @@ import Evento from "../entities/Evento";
 import {AppDataSource} from "../../../../shared/typeorm/data-source";
 import EventoRequest from "../../dto/EventoRequest";
 import {EventoMapper} from "../../mapper/EventoMapper";
+import evento from "../entities/Evento";
 
 
 export class EventoRepository implements IEventoRepository {
@@ -33,6 +34,15 @@ export class EventoRepository implements IEventoRepository {
 
     updateEvento(evento: IEventoRepository): Promise<Evento> {
         return Promise.resolve(undefined);
+    }
+
+      async findEventoById(id: number): Promise<Evento | null> {
+     const evento =  await this.ormRepository.findOne({
+         where:{
+             id: id
+         }
+     });
+     return evento;
     }
 
 }
