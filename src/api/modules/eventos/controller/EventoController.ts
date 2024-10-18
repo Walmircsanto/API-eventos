@@ -12,6 +12,10 @@ export default  class EventoController {
 
 
     private eventoService = container.resolve(EventoService);
+
+    constructor() {
+    }
+
     public async createEvento(req: Request, res: Response): Promise<Response | undefined> {
         const {
             titulo,
@@ -24,7 +28,9 @@ export default  class EventoController {
             certificadoId
         } = req.body;
 
-        const event = await this.eventoService.createEvento(
+        const eventoService  = container.resolve(EventoService);
+
+        const event = await eventoService.createEvento(
             {
                 titulo,
                 img,
@@ -46,8 +52,8 @@ export default  class EventoController {
 
         const  id  = parseInt(req.params.id)
 
-
-        const event =  await this.eventoService.findById({id});
+        const eventoService  = container.resolve(EventoService)
+        const event =  await eventoService.findById({id});
 
         return res.status(200).json(event);
     }
