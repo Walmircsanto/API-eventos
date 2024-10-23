@@ -5,19 +5,17 @@ import IEventoRepository from "./interfaces/IEventoRepository";
 import {inject, injectable} from "tsyringe";
 import {EventoRepository} from "../typeorm/repositories/EventoRepository";
 import EventoRequest from "../dto/EventoRequest";
+import EventosRouter from "../routes/EventosRouter";
 
 interface IdRequest {
     id: number
 }
 
 
-@injectable() // indica que a nossa classe recebe a injeção de dependendica
+@injectable() // indica que a nossa classe recebe a injeção de dependencia
 class EventoService {
 
-    private eventoRepository: IEventoRepository
-
-    constructor(@inject('EventoRepository') eventoRepository: IEventoRepository) {
-        this.eventoRepository = eventoRepository;
+    constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
     }
 
     public async createEvento({
@@ -73,4 +71,4 @@ class EventoService {
 
 }
 
-export default EventoService;
+ export default EventoService;
