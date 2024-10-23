@@ -1,3 +1,4 @@
+
 import {Repository} from 'typeorm';
 import IEventoRepository from "../../services/interfaces/IEventoRepository";
 import Evento from "../entities/Evento";
@@ -5,8 +6,9 @@ import {AppDataSource} from "../../../../shared/typeorm/data-source";
 import EventoRequest from "../../dto/EventoRequest";
 import {EventoMapper} from "../../mapper/EventoMapper";
 import evento from "../entities/Evento";
+import {injectable} from "tsyringe";
 
-
+@injectable()
 export class EventoRepository implements IEventoRepository {
 
     // A Repository<> e uma classe do proprio TypeORM que permite acesso a banco de dados
@@ -33,7 +35,8 @@ export class EventoRepository implements IEventoRepository {
     }
 
     updateEvento(evento: EventoRequest): Promise<Evento> {
-      return null
+      throw new Error("Error");
+        // return null
     }
 
       async findEventoById(id: number): Promise<Evento | null> {
