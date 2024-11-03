@@ -4,6 +4,7 @@ import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import EventoRequest from "../dto/EventoRequest";
 import {CONSTRAINT} from "sqlite3";
+import AppError from "../../../shared/errors/AppError";
 
 
 @injectable()
@@ -26,7 +27,6 @@ export default class EventoController {
             certificadoId
         } = req.body;
 
-
         const event = await this.eventoService.createEvento(
             {
                 titulo,
@@ -37,10 +37,17 @@ export default class EventoController {
                 dataFim,
                 usuariosIds,
                 certificadoId
-            });
-        console.log(req.file?.originalname)
+            }).then(async (res) => {
 
-        await this.eventoService.findAllEventos()
+            const imgFileName = req.file?.filename;
+            if (imgFileName) {
+                console.log(imgFileName)
+                const id = res.id
+                await this.eventoService.createAvatarService({id, imgFileName})
+
+
+            }
+        });
         return res.status(200).json(event);
 
     }
