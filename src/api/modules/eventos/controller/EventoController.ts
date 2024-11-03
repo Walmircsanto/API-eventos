@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import  EventoService from '../services/EventoService'
+import EventoService from '../services/EventoService'
 import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import EventoRequest from "../dto/EventoRequest";
@@ -9,10 +9,11 @@ import AppError from "../../../shared/errors/AppError";
 
 @injectable()
 export default class EventoController {
-    constructor(@inject(EventoService) private readonly eventoService: EventoService) {}
+    constructor(@inject(EventoService) private readonly eventoService: EventoService) {
+    }
 
 
-
+    // @ts-ignore
     public async createEvento(req: Request, res: Response): Promise<Response | undefined> {
 
 
@@ -27,7 +28,7 @@ export default class EventoController {
             certificadoId
         } = req.body;
 
-        const event = await this.eventoService.createEvento(
+        const event = await this.eventoService.createEvent(
             {
                 titulo,
                 img,
@@ -37,18 +38,17 @@ export default class EventoController {
                 dataFim,
                 usuariosIds,
                 certificadoId
-            }).then(async (res) => {
+            }).then(async (event) => {
 
             const imgFileName = req.file?.filename;
             if (imgFileName) {
                 console.log(imgFileName)
-                const id = res.id
-                await this.eventoService.createAvatarService({id, imgFileName})
-
-
+                const id = event.id
+                const evento = await this.eventoService.createAvatarService({id, imgFileName})
+                return res.status(200).json(evento)
             }
         });
-        return res.status(200).json(event);
+
 
     }
 
@@ -72,8 +72,6 @@ export default class EventoController {
 
         return res.status(200).json(eventos);
     }
-    
-
 
 
 }
