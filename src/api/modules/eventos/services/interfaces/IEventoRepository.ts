@@ -1,5 +1,6 @@
 import Evento from "../../typeorm/entities/Evento";
 import EventoRequest from "../../dto/EventoRequest";
+import {IRequestEvento} from "../../typeorm/repositories/EventoRepository";
 
 export default interface IEventoRepository {
 
@@ -7,6 +8,6 @@ export default interface IEventoRepository {
     listEventos():Promise<Evento[] | null>
 
     findEventoById(id: number): Promise<Evento | null>
-    updateEvento(evento: EventoRequest):Promise<Evento | null>
+    updateEvento(evento: IRequestEvento):Promise<Evento | null>
     deleteEvento(idEvento:number):void
 }

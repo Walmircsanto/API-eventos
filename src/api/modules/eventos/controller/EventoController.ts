@@ -11,7 +11,10 @@ export default class EventoController {
     constructor(@inject(EventoService) private readonly eventoService: EventoService) {}
 
 
+
     public async createEvento(req: Request, res: Response): Promise<Response | undefined> {
+
+
         const {
             titulo,
             img,
@@ -22,6 +25,7 @@ export default class EventoController {
             usuariosIds,
             certificadoId
         } = req.body;
+
 
         const event = await this.eventoService.createEvento(
             {
@@ -34,9 +38,10 @@ export default class EventoController {
                 usuariosIds,
                 certificadoId
             });
+        console.log(req.file?.originalname)
 
         await this.eventoService.findAllEventos()
-        return res.status(200).json();
+        return res.status(200).json(event);
 
     }
 
@@ -60,4 +65,8 @@ export default class EventoController {
 
         return res.status(200).json(eventos);
     }
+    
+
+
+
 }

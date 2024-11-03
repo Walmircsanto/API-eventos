@@ -11,6 +11,11 @@ interface IdRequest {
     id: number
 }
 
+interface IRequestIMGEvent{
+    id:number,
+    imgFileName:string
+}
+
 
 @injectable() // indica que a nossa classe recebe a injeção de dependencia
 class EventoService {
@@ -29,10 +34,10 @@ class EventoService {
                                   certificadoId
                               }: EventoRequest) {
 
-
         // if (eventExits) {
         //     throw new AppError("Evento ja existe com esse nome", "Bad request", 400);
         // }
+
 
         const evento = await this.eventoRepository.createEvento(
             {
@@ -67,6 +72,15 @@ class EventoService {
         const eventos = await this.eventoRepository.listEventos();
 
         return eventos;
+    }
+
+    private  createAvatarService({id,imgFileName}: IRequestIMGEvent){
+
+
+     evento.img = imgFileName;
+     await this.eventoRepository.updateEvento(evento);
+
+     return evento;
     }
 
 }

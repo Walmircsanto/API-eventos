@@ -16,7 +16,7 @@ export default class EventoRequest {
 
     dataFim: Date;
 
-    certificadoId: number
+    certificadoId: number | null
 
-    usuariosIds: number[]
+    usuariosIds: number[] | null
 }
