@@ -23,7 +23,7 @@ class EventoService {
     constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
     }
 
-    public async createEvento({
+    public async createEvent({
                                   titulo,
                                   img,
                                   status,
@@ -34,10 +34,10 @@ class EventoService {
                                   certificadoId
                               }: EventoRequest) {
 
+
         // if (eventExits) {
         //     throw new AppError("Evento ja existe com esse nome", "Bad request", 400);
         // }
-
 
         const evento = await this.eventoRepository.createEvento(
             {
@@ -49,7 +49,7 @@ class EventoService {
                 dataFim,
                 usuariosIds,
                 certificadoId
-            })
+            });
         return evento;
     }
 
@@ -74,8 +74,12 @@ class EventoService {
         return eventos;
     }
 
-    private  createAvatarService({id,imgFileName}: IRequestIMGEvent){
+    public async createAvatarService({id,imgFileName}: IRequestIMGEvent){
+     const evento = await this.findById({id});
 
+     if(!evento){
+         throw new AppError("Evento not found", "Bad request", 400);
+     }
 
      evento.img = imgFileName;
      await this.eventoRepository.updateEvento(evento);
