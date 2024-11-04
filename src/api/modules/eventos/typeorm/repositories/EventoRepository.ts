@@ -1,12 +1,107 @@
-import {EntityRepository, Repository} from 'typeorm';
-import {DataSource} from "typeorm";
+import {Repository} from 'typeorm';
+import IEventoRepository from "../../services/interfaces/IEventoRepository";
+import Evento from "../entities/Evento";
+import {AppDataSource} from "../../../../shared/typeorm/data-source";
+import EventoRequest from "../../dto/EventoRequest";
+import {EventoMapper} from "../../mapper/EventoMapper";
+import evento from "../entities/Evento";
+import {injectable} from "tsyringe";
+import statusEvento from "../entities/enums/EventoStatus";
+import AppError from "../../../../shared/errors/AppError";
 
 
-// @EntityRepository(Evento)
-// export  default class EventoRepository extends Repository<Evento> {
-//
-//     public async findbyTitulo(titulo:string): Promise<Evento | null> {
-//         const evento = this.findOne({ where:{ titulo:titulo} });
-//         return evento;
-//     }
-// }
+export interface IRequestEvento {
+    id: number
+
+    titulo: string;
+
+    img: string;
+
+    status: statusEvento;
+
+    descricao: string
+
+    dataInicio: Date;
+
+    dataFim: Date;
+}
+
+@injectable()
+export class EventoRepository implements IEventoRepository {
+
+    // A Repository<> e uma classe do proprio TypeORM que permite acesso a banco de dados
+    private ormRepository: Repository<Evento>;
+
+    constructor() {
+        this.ormRepository = AppDataSource.getRepository(Evento);
+    }
+
+    public async createEvento({
+                                  titulo,
+                                  img,
+                                  status,
+                                  descricao,
+                                  dataInicio,
+                                  dataFim,
+                                  usuariosIds,
+                                  certificadoId
+                              }: EventoRequest): Promise<Evento> {
+
+        const event = EventoMapper.parserRequestInEvento({
+            titulo,
+            img,
+            status,
+            descricao,
+            dataInicio,
+            dataFim,
+            usuariosIds,
+            certificadoId
+        });
+
+        const evento = await this.ormRepository.save(event);
+
+        return evento;
+    }
+
+    deleteEvento(idEvento: number): void {
+    }
+
+    listEventos(): Promise<Evento[]> {
+        return this.ormRepository.find();
+    }
+
+    async updateEvento(eventoRequest: IRequestEvento): Promise<Evento> {
+
+        const evento = await this.ormRepository.findOne({
+            where: {
+                id: eventoRequest.id,
+            }
+        });
+        if (evento) {
+            evento.id = eventoRequest.id;
+            evento.img = eventoRequest.img;
+            evento.titulo = eventoRequest.titulo;
+            evento.status = eventoRequest.status;
+            evento.descricao = eventoRequest.descricao;
+            evento.dataInicio = eventoRequest.dataInicio;
+            evento.dataFim = eventoRequest.dataFim;
+
+            await this.ormRepository.save(evento);
+            return evento;
+         }else{
+            throw new AppError("Event not found", "Bad request", 400);
+        }
+
+
+    }
+
+    async findEventoById(id: number): Promise<Evento | null> {
+        const evento = await this.ormRepository.findOne({
+            where: {
+                id: id
+            }
+        });
+        return evento;
+    }
+
+}

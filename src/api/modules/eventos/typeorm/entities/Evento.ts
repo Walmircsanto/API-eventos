@@ -9,7 +9,6 @@ import {
 import { Exclude } from 'class-transformer';
 import statusEvento from "./enums/EventoStatus";
 import Usuario from "../../../usuario/typeorm/entities/Usuario";
-import EventoStatus from "./enums/EventoStatus";
 import Certificado from "../../../certificado/typeorm/entities/Certificado";
 
 @Entity()
@@ -41,11 +40,11 @@ class Evento {
     dataFim: Date;
 
     @OneToOne(() => Certificado)
-    certificado: Certificado
+    certificado : Certificado | null
 
     @ManyToMany(() => Usuario, { onDelete: 'CASCADE' })
     @JoinTable()
-    usuarios: Usuario[]
+    usuarios : Usuario[] | null
 
     @CreateDateColumn()
     @Exclude()
