@@ -1,9 +1,12 @@
 import express from 'express';
 import bodyParser from "body-parser";
+import 'express-async-errors';
 import { AppDataSource } from './api/shared/typeorm/data-source'
 import routes from "./api/shared/http/routes";
+
+
 const app = express();
-import container from "./api/modules/eventos/config/container";
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
