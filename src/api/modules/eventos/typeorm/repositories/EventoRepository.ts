@@ -63,7 +63,9 @@ export class EventoRepository implements IEventoRepository {
         return evento;
     }
 
-    deleteEvento(idEvento: number): void {
+    async deleteEvento(idEvent: number): Promise<void> {
+
+        await this.ormRepository.delete(idEvent);
     }
 
     listEventos(): Promise<Evento[]> {
@@ -88,7 +90,7 @@ export class EventoRepository implements IEventoRepository {
 
             await this.ormRepository.save(evento);
             return evento;
-         }else{
+        } else {
             throw new AppError("Event not found", "Bad request", 400);
         }
 
