@@ -1,7 +1,7 @@
 import {container} from "tsyringe";
 
-import {EventoRepository} from "../typeorm/repositories/EventoRepository";
-import  EventoService from "../services/EventoService";
+import EventoRepository from "../typeorm/repositories/EventoRepository";
+import {EventoService} from "../services/EventoService";
 import EventoController from "../controller/EventoController";
 
 
