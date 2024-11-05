@@ -11,9 +11,9 @@ interface IdRequest {
     id: number
 }
 
-interface IRequestIMGEvent{
-    id:number,
-    imgFileName:string
+interface IRequestIMGEvent {
+    id: number,
+    imgFileName: string
 }
 
 
@@ -24,15 +24,15 @@ class EventoService {
     }
 
     public async createEvent({
-                                  titulo,
-                                  img,
-                                  status,
-                                  descricao,
-                                  dataInicio,
-                                  dataFim,
-                                  usuariosIds,
-                                  certificadoId
-                              }: EventoRequest) {
+                                 titulo,
+                                 img,
+                                 status,
+                                 descricao,
+                                 dataInicio,
+                                 dataFim,
+                                 usuariosIds,
+                                 certificadoId
+                             }: EventoRequest) {
 
 
         // if (eventExits) {
@@ -68,25 +68,35 @@ class EventoService {
 
     }
 
-    public async findAllEventos(){
+    public async findAllEventos() {
         const eventos = await this.eventoRepository.listEventos();
 
         return eventos;
     }
 
-    public async createAvatarService({id,imgFileName}: IRequestIMGEvent){
-     const evento = await this.findById({id});
+    public async createAvatarService({id, imgFileName}: IRequestIMGEvent) {
+        const evento = await this.findById({id});
 
-     if(!evento){
-         throw new AppError("Evento not found", "Bad request", 400);
-     }
+        if (!evento) {
+            throw new AppError("Evento not found", "Bad request", 400);
+        }
 
-     evento.img = imgFileName;
-     await this.eventoRepository.updateEvento(evento);
+        evento.img = imgFileName;
+        await this.eventoRepository.updateEvento(evento);
 
-     return evento;
+        return evento;
+    }
+
+    public async deleteEvento(id: number): Promise<void> {
+        const event = await this.findById({id});
+
+        if (!event) {
+            throw new AppError("Evento not found", "Bad request", 400);
+        }
+        await this.eventoRepository.deleteEvento(id);
+
     }
 
 }
 
- export default EventoService;
+export default EventoService;
