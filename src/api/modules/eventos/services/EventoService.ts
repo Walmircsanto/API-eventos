@@ -1,11 +1,8 @@
 import 'reflect-metadata';
-import statusEvento from "../typeorm/entities/enums/EventoStatus";
 import AppError from "../../../shared/errors/AppError";
-import IEventoRepository from "./interfaces/IEventoRepository";
 import {inject, injectable} from "tsyringe";
-import {EventoRepository} from "../typeorm/repositories/EventoRepository";
+import EventoRepository from "../typeorm/repositories/EventoRepository";
 import EventoRequest from "../dto/EventoRequest";
-import EventosRouter from "../routes/EventosRouter";
 
 interface IdRequest {
     id: number
@@ -18,7 +15,7 @@ interface IRequestIMGEvent {
 
 
 @injectable() // indica que a nossa classe recebe a injeção de dependencia
-class EventoService {
+export class EventoService {
 
     constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
     }
@@ -99,4 +96,3 @@ class EventoService {
 
 }
 
-export default EventoService;
