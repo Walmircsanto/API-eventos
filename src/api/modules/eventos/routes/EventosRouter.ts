@@ -7,9 +7,10 @@ import {uploadImgEvento} from "../../../middleware/imageEvento";
 const eventosRouter = Router(); // Route e uma função dentro da express logo não instancio ela como uma classe
 const eventoController = container.resolve(EventoController);
 
- eventosRouter.post("/", multer(uploadImgEvento.getConfig).single("file"),eventoController.createEvento.bind(eventoController));
- eventosRouter.get('/:id', eventoController.findById.bind(eventoController))
+eventosRouter.post("/", multer(uploadImgEvento.getConfig).single("file"), eventoController.createEvento.bind(eventoController));
+eventosRouter.get('/:id', eventoController.findById.bind(eventoController))
 eventosRouter.get('/', eventoController.findAll.bind(eventoController));
+eventosRouter.delete('/:id', eventoController.deleteEvento.bind(eventoController))
 
 
 export default eventosRouter;
