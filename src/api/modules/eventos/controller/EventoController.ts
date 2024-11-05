@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import EventoService from '../services/EventoService'
+import {EventoService} from "../services/EventoService";
 import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import EventoRequest from "../dto/EventoRequest";
@@ -71,6 +71,13 @@ export default class EventoController {
         const eventos = await this.eventoService.findAllEventos();
 
         return res.status(200).json(eventos);
+    }
+
+    public async deleteEvento(req: Request, res: Response){
+        const id = parseInt(req.params.id)
+         await this.eventoService.deleteEvento(id);
+
+        return res.status(204).json('');
     }
 
 
