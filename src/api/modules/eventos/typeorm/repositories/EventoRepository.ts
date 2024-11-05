@@ -27,7 +27,7 @@ export interface IRequestEvento {
 }
 
 @injectable()
-export class EventoRepository implements IEventoRepository {
+export default class EventoRepository implements IEventoRepository {
 
     // A Repository<> e uma classe do proprio TypeORM que permite acesso a banco de dados
     private ormRepository: Repository<Evento>;
