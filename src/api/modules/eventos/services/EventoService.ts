@@ -20,21 +20,10 @@ export class EventoService {
     constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
     }
 
-    public async createEvent({
-                                 titulo,
-                                 img,
-                                 status,
-                                 descricao,
-                                 dataInicio,
-                                 dataFim,
-                                 usuariosIds,
-                                 certificadoId
-                             }: EventoRequest) {
+    public async createEvent({titulo, img, status, descricao, dataInicio, dataFim, usuariosIds, certificadoId
+    }: EventoRequest) {
 
 
-        // if (eventExits) {
-        //     throw new AppError("Evento ja existe com esse nome", "Bad request", 400);
-        // }
 
         const evento = await this.eventoRepository.createEvento(
             {
