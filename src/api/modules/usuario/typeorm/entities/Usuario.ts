@@ -26,6 +26,9 @@ class Usuario{
     @Column()
     email:string;
 
+    @Column()
+    password:string;
+
     @CreateDateColumn()
     @Exclude()
     created_at: Date;
