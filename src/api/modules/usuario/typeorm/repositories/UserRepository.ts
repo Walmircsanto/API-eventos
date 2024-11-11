@@ -16,7 +16,7 @@ export default class UsersRepository implements IUserRepository {
     }
 
     async createUser(user: Usuario): Promise<Usuario | undefined> {
-        return this.ormRepository.create(user);
+        return this.ormRepository.save(user);
     }
 
     async deleteUser(id: number): Promise<void> {
@@ -25,7 +25,7 @@ export default class UsersRepository implements IUserRepository {
     }
 
     async finAllUsers(): Promise<Usuario[] | null> {
-      return  await this.ormRepository.find();
+        return await this.ormRepository.find();
     }
 
     async findUserById(id: number): Promise<Usuario | null> {
@@ -39,16 +39,29 @@ export default class UsersRepository implements IUserRepository {
     }
 
     async updateUser(user: Usuario): Promise<Usuario | undefined> {
-        const userInstance = await  this.ormRepository.findOne({
-            where:{
+        const userInstance = await this.ormRepository.findOne({
+            where: {
                 id: user.id
             }
         });
-        if(userInstance){
-            await this.ormRepository.update(user,userInstance);
-        }
-        throw new AppError("User not found in database", "Bad request", 400);
+        if (!userInstance) {
+            throw new AppError("User not found in database", "Bad request", 400);
 
+        }
+         return  await this.ormRepository.save(user);
+
+
+    }
+
+    public async existEmail(email: string) {
+        console.log(email)
+        const user = await this.ormRepository.findOne({
+            where: {
+                email: email,
+            },
+        });
+
+        return user;
     }
 
 }
