@@ -9,6 +9,7 @@ export default class UserMapper {
         user.categoria = userDTO.categoria;
         user.idade = userDTO.idade;
         user.email = userDTO.email;
+        user.password = userDTO.password;
 
         return user;
     }
