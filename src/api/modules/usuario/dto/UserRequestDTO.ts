@@ -1,6 +1,6 @@
 
 export default class UserRequestDTO {
-    id:number;
+    id?:number;
 
     idade:number;
 
@@ -9,6 +9,8 @@ export default class UserRequestDTO {
     nome:string;
 
     email:string;
+
+    password:string;
 
 
 }
