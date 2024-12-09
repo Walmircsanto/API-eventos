@@ -43,10 +43,17 @@ export default class UserController {
         return res.status(204).json("");
     }
 
-    public async findAllUsers(req: Request, res: Response){
+    public async findAllUsers(req: Request, res: Response) {
 
         const users = await this.userService.finAllUser();
 
         return res.status(200).json(users);
+    }
+
+    public async sessionUser(req: Request, res: Response) {
+        const {email, password} = req.body;
+        const tokenUser = await this.userService.sessionUser(email);
+
+        return res.status(200).json(tokenUser);
     }
 }
