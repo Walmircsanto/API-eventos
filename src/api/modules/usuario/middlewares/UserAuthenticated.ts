@@ -1,7 +1,7 @@
 import AppError from "@modules/errors/AppError";
 import {Request, Response, NextFunction} from "express";
 import {verify} from "jsonwebtoken";
-import {auth} from "../../../config/Auth";
+import {auth}  from "@config/Auth";
 
 export default function userAuthenticated(req: Request, res: Response, next: NextFunction) {
 
@@ -19,7 +19,7 @@ export default function userAuthenticated(req: Request, res: Response, next: Nex
         // esse metodo pega o token, e a chave hash que foi especificada, verificando se esse token foi
         // criado com essa secret
         const decodeToken = verify(
-            token, authConfig.jwt.secret) as {[key: string]: any};
+            token, auth.secret) as {[key: string]: any};
 
         const idUser = decodeToken.id
 
