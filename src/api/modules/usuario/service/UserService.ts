@@ -3,6 +3,13 @@ import UsersRepository from "../typeorm/repositories/UserRepository";
 import UserRequestDTO from "../dto/UserRequestDTO";
 import UserMapper from "../mapper/UserMapper";
 import AppError from "../../../shared/errors/AppError";
+import {sign} from "jsonwebtoken";
+import {auth} from "../../../config/Auth";
+
+interface IRequestAuthenticateUser {
+    email: string
+    password: string
+}
 
 @injectable()
 export default class UserService {
@@ -75,6 +82,25 @@ export default class UserService {
             throw new AppError("List Users not found", "Bad request");
         }
         return users;
+    }
+
+
+    public async sessionUser(id: number) {
+        const user = await this.usersRepository.findUserById(id)
+
+        if (user) {
+            const id = user.id.toString();
+
+            const token = sign({id}, auth.secret, {
+                expiresIn: auth.expiresIn
+            });
+
+            return {
+                user,
+                token
+            }
+        }
+
     }
 
 }
