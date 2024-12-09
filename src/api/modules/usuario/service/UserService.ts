@@ -5,6 +5,7 @@ import UserMapper from "../mapper/UserMapper";
 import AppError from "../../../shared/errors/AppError";
 import {sign} from "jsonwebtoken";
 import {auth} from "../../../config/Auth";
+import IRequestauthenticateUser from "../dto/IRequestAuthenticateDTO";
 
 interface IRequestAuthenticateUser {
     email: string
@@ -85,8 +86,8 @@ export default class UserService {
     }
 
 
-    public async sessionUser(id: number) {
-        const user = await this.usersRepository.findUserById(id)
+    public async sessionUser({email, password}: IRequestauthenticateUser) {
+        const user = await this.usersRepository.existEmail(email)
 
         if (user) {
             const id = user.id.toString();
