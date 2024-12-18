@@ -17,8 +17,7 @@ container.registerSingleton(UserController);
 
 container.register('IUserRepository', {useValue: UsersRepository})
 //para essa instancia ser utilizada e aqui que eu digo para a classe instanciaa
-container.resolve(EventoRepository);
-container.resolve(UsersRepository);
+
 container.registerSingleton(UserService);
 
 export default container
