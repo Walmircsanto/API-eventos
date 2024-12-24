@@ -2,9 +2,9 @@ import {inject, injectable} from "tsyringe";
 import UsersRepository from "../typeorm/repositories/UserRepository";
 import UserRequestDTO from "../dto/UserRequestDTO";
 import UserMapper from "../mapper/UserMapper";
-import AppError from "../../../shared/errors/AppError";
+import AppError from "@modules/errors/AppError";
 import {sign} from "jsonwebtoken";
-import {auth} from "../../../config/Auth";
+import {auth} from "@config/Auth";
 import IRequestauthenticateUser from "../dto/IRequestAuthenticateDTO";
 
 interface IRequestAuthenticateUser {
