@@ -5,16 +5,16 @@ import path from "path";
 export default class UploadImages{
 private URL: string = path.basename('src/api/bucket/images')
 
-private storage(): multer.StorageEngine|undefined{
-
-}
-
-private fileFilter(){
-
-}
-
-get getConfig(): multer.Options{
-
-}
+// private storage(): multer.StorageEngine|undefined{
+//
+// }
+//
+// private fileFilter(){
+//
+// }
+//
+// get getConfig(): multer.Options{
+//
+// }
 
 }

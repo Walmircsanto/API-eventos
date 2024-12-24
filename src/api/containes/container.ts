@@ -8,7 +8,7 @@ import UserService from "../modules/usuario/service/UserService";
 import UserController from "../modules/usuario/controller/UserController";
 
 
-//basicamente ta dizendo que quando precisar instancia ou usar uma instancia do eventoRepository e esse container que vai gerenciar
+//basicamente ta dizendo que quando precisar instancia ou usar uma instancia do eventoRepository e esse containes que vai gerenciar
 container.registerSingleton(EventoRepository);
 container.registerSingleton(EventoService);
 container.registerSingleton(EventoController);
@@ -17,8 +17,7 @@ container.registerSingleton(UserController);
 
 container.register('IUserRepository', {useValue: UsersRepository})
 //para essa instancia ser utilizada e aqui que eu digo para a classe instanciaa
-container.resolve(EventoRepository);
-container.resolve(UsersRepository);
+
 container.registerSingleton(UserService);
 
 export default container

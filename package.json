@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --transpile-only src/index.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,15 +24,17 @@
     "prettier": "^2.2.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^1.0.0",
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^3.15.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "celebrate": "^15.0.3",
     "class-transformer": "^0.5.1",
     "date-fns": "^3.6.0",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "mime-types": "^2.1.35",
     "multer": "^1.4.5-lts.1",
     "sqlite3": "^5.1.7",

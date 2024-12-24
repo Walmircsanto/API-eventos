@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import EventoController from "../controller/EventoController";
-import container from "../../../config/container";
+import container from "../../../containes/container";
 import multer from "multer";
 import {uploadImgEvento} from "../../../middleware/imageEvento";
 

@@ -2,7 +2,15 @@ import {inject, injectable} from "tsyringe";
 import UsersRepository from "../typeorm/repositories/UserRepository";
 import UserRequestDTO from "../dto/UserRequestDTO";
 import UserMapper from "../mapper/UserMapper";
-import AppError from "../../../shared/errors/AppError";
+import AppError from "@modules/errors/AppError";
+import {sign} from "jsonwebtoken";
+import {auth} from "@config/Auth";
+import IRequestauthenticateUser from "../dto/IRequestAuthenticateDTO";
+
+interface IRequestAuthenticateUser {
+    email: string
+    password: string
+}
 
 @injectable()
 export default class UserService {
@@ -75,6 +83,25 @@ export default class UserService {
             throw new AppError("List Users not found", "Bad request");
         }
         return users;
+    }
+
+
+    public async sessionUser({email, password}: IRequestauthenticateUser) {
+        const user = await this.usersRepository.existEmail(email)
+
+        if (user) {
+            const id = user.id.toString();
+
+            const token = sign({id}, auth.secret, {
+                expiresIn: auth.expiresIn
+            });
+
+            return {
+                user,
+                token
+            }
+        }
+
     }
 
 }
