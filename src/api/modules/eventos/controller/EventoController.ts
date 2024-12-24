@@ -48,14 +48,13 @@ export default class EventoController {
   ): Promise<Response | undefined> {
     const id = parseInt(req.params.id);
 
-    // const eventoService = container.resolve(EventoService)
     const event = await this.eventoService.findById({ id });
 
     return res.status(200).json(event);
   }
 
   public async findAll(req: Request, res: Response) {
-    // const eventoService = container.resolve(EventoService);
+
     console.log("CHAMOU EVENTOSERVICE");
     const eventos = await this.eventoService.findAllEventos();
 
