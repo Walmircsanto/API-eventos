@@ -4,3 +4,4 @@
 /src/api/bucket/image/
 node_modules/
 .env
+build/
