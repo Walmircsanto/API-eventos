@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import 'express-async-errors';
 import {AppDataSource} from './api/shared/typeorm/data-source'
 import routes from "./api/shared/http/routes";
-import AppError from "./api/shared/errors/AppError";
+import AppError from "@modules/errors/AppError";
 
 
 const app = express();
