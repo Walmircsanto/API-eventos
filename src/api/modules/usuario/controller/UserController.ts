@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-import {Column} from "typeorm";
 import {inject, injectable} from "tsyringe";
 import UserService from "../service/UserService";
 
@@ -21,10 +20,16 @@ export default class UserController {
 
     public async finByIdUser(req: Request, res: Response) {
         const id = parseInt(req.params.id);
+        const idUser = parseInt(req.body.userId);
 
-        const user = await this.userService.findUserById(id);
+        if (id === idUser) {
+            const user = await this.userService.findUserById(id);
+            return res.status(200).json(user);
+        } else {
+            return res.status(401).json("Unautorized")
+        }
 
-        return res.status(200).json(user);
+
     }
 
     public async deleteUser(req: Request, res: Response) {
