@@ -2,6 +2,7 @@ import EventoRequest from "../dto/EventoRequest";
 import Evento from "../typeorm/entities/Evento";
 import Usuario from "../../usuario/typeorm/entities/Usuario";
 import UserService from "../../usuario/service/UserService";
+import EventoResponse from "../dto/EventResponse";
 
 export class EventoMapper {
 
@@ -9,6 +10,7 @@ export class EventoMapper {
 
     public async parserRequestInEvento(eventRequest: EventoRequest) {
         const evento = new Evento();
+        evento.id = <number>eventRequest.id;
         evento.img = eventRequest.img;
         evento.titulo = eventRequest.titulo;
         evento.descricao = eventRequest.descricao;
@@ -42,6 +44,19 @@ export class EventoMapper {
         }
 
         return usuario
+    }
+
+    public parseEntityToDTO(evento:Evento){
+        const eventoResponse = new EventoResponse;
+        eventoResponse.id = evento.id;
+        eventoResponse.img = evento.img;
+        eventoResponse.titulo = evento.titulo;
+        eventoResponse.descricao = evento.descricao;
+        eventoResponse.dataInicio = evento.dataInicio;
+        eventoResponse.dataFim = evento.dataFim;
+        eventoResponse.numVagas = evento.numVagas;
+
+        return eventoResponse;
     }
 
 }
