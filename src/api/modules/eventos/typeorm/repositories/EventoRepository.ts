@@ -4,7 +4,6 @@ import Evento from "../entities/Evento";
 import {AppDataSource} from "../../../../shared/typeorm/data-source";
 import EventoRequest from "../../dto/EventoRequest";
 import {EventoMapper} from "../../mapper/EventoMapper";
-import evento from "../entities/Evento";
 import {injectable} from "tsyringe";
 import statusEvento from "../entities/enums/EventoStatus";
 import AppError from "../../../../shared/errors/AppError";
@@ -43,17 +42,19 @@ export default class EventoRepository implements IEventoRepository {
                                   descricao,
                                   dataInicio,
                                   dataFim,
+                                  numVagas,
                                   usuariosIds,
                                   certificadoId
                               }: EventoRequest): Promise<Evento> {
 
-        const event = EventoMapper.parserRequestInEvento({
+        const event =  await new EventoMapper().parserRequestInEvento({
             titulo,
             img,
             status,
             descricao,
             dataInicio,
             dataFim,
+            numVagas,
             usuariosIds,
             certificadoId
         });

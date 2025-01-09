@@ -13,6 +13,7 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     synchronize: true,
+    dropSchema: true,
     entities: [Evento,Usuario, Certificado], // indicando pro meu banco de dados quais entidades eu tenho
     logging: true
 });

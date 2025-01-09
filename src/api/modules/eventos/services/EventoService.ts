@@ -3,10 +3,8 @@ import AppError from "../../../shared/errors/AppError";
 import {inject, injectable} from "tsyringe";
 import EventoRepository from "../typeorm/repositories/EventoRepository";
 import EventoRequest from "../dto/EventoRequest";
+import {EventoMapper} from "../mapper/EventoMapper";
 
-interface IdRequest {
-    id: number
-}
 
 interface IRequestIMGEvent {
     id: number,
@@ -20,10 +18,17 @@ export class EventoService {
     constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
     }
 
-    public async createEvent({titulo, img, status, descricao, dataInicio, dataFim, usuariosIds, certificadoId
-    }: EventoRequest) {
-
-
+    public async createEvent({
+                                 titulo,
+                                 img,
+                                 status,
+                                 descricao,
+                                 dataInicio,
+                                 dataFim,
+                                 numVagas,
+                                 usuariosIds,
+                                 certificadoId
+                             }: EventoRequest) {
 
         const evento = await this.eventoRepository.createEvento(
             {
@@ -33,6 +38,7 @@ export class EventoService {
                 descricao,
                 dataInicio,
                 dataFim,
+                numVagas,
                 usuariosIds,
                 certificadoId
             });
@@ -40,7 +46,7 @@ export class EventoService {
     }
 
 
-    public async findById({id}: IdRequest) {
+    public async findById(id: number) {
 
 
         const evento = await this.eventoRepository.findEventoById(id);
@@ -61,7 +67,7 @@ export class EventoService {
     }
 
     public async createAvatarService({id, imgFileName}: IRequestIMGEvent) {
-        const evento = await this.findById({id});
+        const evento = await this.findById(id);
 
         if (!evento) {
             throw new AppError("Evento not found", "Bad request", 400);
@@ -74,12 +80,26 @@ export class EventoService {
     }
 
     public async deleteEvento(id: number): Promise<void> {
-        const event = await this.findById({id});
+        const event = await this.findById(id);
 
         if (!event) {
             throw new AppError("Evento not found", "Bad request", 400);
         }
         await this.eventoRepository.deleteEvento(id);
+
+    }
+
+    public async updateEvento(eventRequest: EventoRequest) {
+
+        const eventId = eventRequest.id;
+        if (eventId) {
+            const event = await this.eventoRepository.findEventoById(eventId);
+
+            if (event) {
+                const evento = await new EventoMapper().parserRequestInEvento(eventRequest);
+                return this.eventoRepository.updateEvento(evento)
+            }
+        }
 
     }
 
