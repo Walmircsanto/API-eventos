@@ -1,12 +1,15 @@
 import statusEvento from "../typeorm/entities/enums/EventoStatus";
-import Certificado from "../../certificado/typeorm/entities/Certificado";
-import Usuario from "../../usuario/typeorm/entities/Usuario";
+
 
 export default class EventoRequest {
+
+    id?: number;
 
     titulo: string;
 
     img:string;
+
+    numVagas:number;
 
     status: statusEvento;
 
