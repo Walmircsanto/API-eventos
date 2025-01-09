@@ -99,7 +99,7 @@ export default class EventoController {
             certificadoId
         });
 
-        return res.status(200).json(event);
+        return res.status(204);
 
     }
 
