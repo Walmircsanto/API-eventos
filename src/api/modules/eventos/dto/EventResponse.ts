@@ -1,15 +1,15 @@
 import statusEvento from "../typeorm/entities/enums/EventoStatus";
 
 
-export default class EventoRequest {
+export default class EventoResponse {
 
-    id?: number;
+    id: number;
 
     titulo: string;
 
     img:string;
 
-    numVagas:number;
+    numVagas: number;
 
     status: statusEvento;
 
@@ -19,7 +19,4 @@ export default class EventoRequest {
 
     dataFim: Date;
 
-    certificadoId: number | null
-
-    usuariosIds: number[] | null
 }

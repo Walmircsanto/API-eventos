@@ -34,6 +34,8 @@ class Evento {
     descricao:string
 
     @Column()
+    numVagas: number
+    @Column()
     dataInicio: Date;
 
     @Column()

@@ -11,7 +11,7 @@ eventosRouter.post("/", multer(uploadImgEvento.getConfig).single("file"), evento
 eventosRouter.get('/:id', eventoController.findById.bind(eventoController))
 eventosRouter.get('/', eventoController.findAll.bind(eventoController));
 eventosRouter.delete('/:id', eventoController.deleteEvento.bind(eventoController))
-
+eventosRouter.put('/update', eventoController.updateEvento.bind(eventoController))
 
 export default eventosRouter;
 
