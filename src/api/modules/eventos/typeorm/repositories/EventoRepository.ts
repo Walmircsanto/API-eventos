@@ -7,6 +7,8 @@ import {EventoMapper} from "../../mapper/EventoMapper";
 import {injectable} from "tsyringe";
 import statusEvento from "../entities/enums/EventoStatus";
 import AppError from "../../../../shared/errors/AppError";
+import usuario from "../../../usuario/typeorm/entities/Usuario";
+import Usuario from "../../../usuario/typeorm/entities/Usuario";
 
 
 export interface IRequestEvento {
@@ -19,6 +21,8 @@ export interface IRequestEvento {
     status: statusEvento;
 
     descricao: string
+
+    usuarios: Usuario[]
 
     dataInicio: Date;
 
@@ -88,7 +92,37 @@ export default class EventoRepository implements IEventoRepository {
             evento.descricao = eventoRequest.descricao;
             evento.dataInicio = eventoRequest.dataInicio;
             evento.dataFim = eventoRequest.dataFim;
+            evento.usuarios = eventoRequest.usuarios
+            for(let i = 0; i < eventoRequest.usuarios.length; i++) {
+                evento.usuarios?.push(eventoRequest.usuarios[i]);
+            }
 
+            await this.ormRepository.save(evento);
+            return evento;
+        } else {
+            throw new AppError("Event not found", "Bad request", 400);
+        }
+
+
+    }
+
+
+    async updateEventoEntity(eventoRequest: Evento): Promise<Evento> {
+
+        const evento = await this.ormRepository.findOne({
+            where: {
+                id: eventoRequest.id,
+            }
+        });
+        if (evento) {
+            evento.id = eventoRequest.id;
+            evento.img = eventoRequest.img;
+            evento.titulo = eventoRequest.titulo;
+            evento.status = eventoRequest.status;
+            evento.descricao = eventoRequest.descricao;
+            evento.dataInicio = eventoRequest.dataInicio;
+            evento.dataFim = eventoRequest.dataFim;
+            evento.usuarios = eventoRequest.usuarios
             await this.ormRepository.save(evento);
             return evento;
         } else {

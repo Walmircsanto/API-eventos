@@ -21,8 +21,9 @@ export class EventoMapper {
         evento.certificado = null
 
         if (eventRequest.usuariosIds?.length) {
-            for (let i = 1; i < eventRequest.usuariosIds?.length; i++) {
-                evento.usuarios?.push( await this.userService.findUserById(i));
+            for (let i = 0; i < eventRequest.usuariosIds?.length; i++) {
+                evento.usuarios = evento.usuarios || [];
+                evento.usuarios.push( await this.userService.findUserById(i));
             }
         } else{
             evento.usuarios = null;
@@ -57,6 +58,29 @@ export class EventoMapper {
         eventoResponse.numVagas = evento.numVagas;
 
         return eventoResponse;
+    }
+
+    public async parserEntityToRequestDTO(event: Evento){
+        const eventoRequest = new EventoRequest();
+        eventoRequest.id = <number>event.id;
+        eventoRequest.img = event.img;
+        eventoRequest.titulo = event.titulo;
+        eventoRequest.descricao = event.descricao;
+        eventoRequest.dataInicio = event.dataInicio
+        eventoRequest.dataFim = event.dataFim
+        eventoRequest.numVagas = event.numVagas
+
+        if (event.usuarios.length) {
+            for (let i = 0; i < evento.usuarios?.length; i++) {
+                eventoRequest.usuariosIds = eventoRequest.usuariosIds || [];
+                eventoRequest.usuariosIds.push( <number>event.usuarios[i].id);
+            }
+        } else{
+            eventoRequest.usuariosIds = null;
+        }
+
+
+        return eventoRequest
     }
 
 }
