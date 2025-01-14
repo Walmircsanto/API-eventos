@@ -3,6 +3,7 @@ import UserService from "./UserService";
 import {EventoService} from "../../eventos/services/EventoService";
 import AppError from "@modules/errors/AppError";
 import EventoRepository from "../../eventos/typeorm/repositories/EventoRepository";
+import send from "../../email/service/SendEmail";
 
 
 @injectable()
@@ -27,7 +28,9 @@ export default class EventSubscribe {
             event.usuarios.push(user);
             event.numVagas--;
 
-            return await this.eventoRepository.updateEventoEntity(event);
+            return await this.eventoRepository.updateEventoEntity(event).then((res) =>{
+                send(user.email,event.descricao,`A sua inscrição no evento ${event.titulo} foi realizada com sucesso`)
+            });
         } else {
             throw new AppError("Não há vagas disponíveis", "bad_request");
         }
