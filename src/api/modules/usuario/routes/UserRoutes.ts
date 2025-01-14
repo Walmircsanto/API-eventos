@@ -12,5 +12,5 @@ userRoutes.get('/:id', userAuthenticated, userController.finByIdUser.bind(userCo
 userRoutes.get('/', userController.findAllUsers.bind(userController));
 userRoutes.delete('/:id', userController.deleteUser.bind(userController));
 userRoutes.post('/session', userController.sessionUser.bind(userController));
-
+userRoutes.post('/:idUser/:idEvent',userController.subEvent.bind(userController) )
 export default userRoutes;

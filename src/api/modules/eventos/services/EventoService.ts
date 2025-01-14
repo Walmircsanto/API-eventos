@@ -4,6 +4,7 @@ import {inject, injectable} from "tsyringe";
 import EventoRepository from "../typeorm/repositories/EventoRepository";
 import EventoRequest from "../dto/EventoRequest";
 import {EventoMapper} from "../mapper/EventoMapper";
+import Evento from "../typeorm/entities/Evento";
 
 
 interface IRequestIMGEvent {
@@ -96,8 +97,22 @@ export class EventoService {
             const event = await this.eventoRepository.findEventoById(eventId);
 
             if (event) {
-                const evento = await new EventoMapper().parserRequestInEvento(eventRequest);
-                return this.eventoRepository.updateEvento(evento)
+
+                return this.eventoRepository.updateEvento(event)
+            }
+        }
+
+    }
+
+    public async updateEventoEntity(eventRequest: Evento) {
+
+        const eventId = eventRequest.id;
+        if (eventId) {
+            const event = await this.eventoRepository.findEventoById(eventId);
+
+            if (event) {
+
+                return this.eventoRepository.updateEventoEntity(event)
             }
         }
 

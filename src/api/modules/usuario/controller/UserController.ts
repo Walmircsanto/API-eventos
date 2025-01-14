@@ -1,11 +1,13 @@
 import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import UserService from "../service/UserService";
+import EventSubscribe from "../service/EventSubscribe";
 
 @injectable()
 export default class UserController {
 
-    constructor(@inject(UserService) private readonly userService: UserService) {
+    constructor(@inject(UserService) private readonly userService: UserService,
+                @inject(EventSubscribe) private readonly subscribeEvent: EventSubscribe) {
     }
 
     public async creatUser(req: Request, res: Response) {
@@ -60,5 +62,14 @@ export default class UserController {
         const tokenUser = await this.userService.sessionUser(email);
 
         return res.status(200).json(tokenUser);
+    }
+
+    public async subEvent(req: Request, res: Response) {
+        const idUser = parseInt(req.params.idUser);
+        const idEvent = parseInt(req.params.idEvent);
+
+        const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
+
+        return res.json(evento).status(200);
     }
 }
