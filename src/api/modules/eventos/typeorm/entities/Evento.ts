@@ -44,8 +44,10 @@ class Evento {
     @OneToOne(() => Certificado)
     certificado : Certificado | null
 
-    @ManyToMany(() => Usuario, { onDelete: 'CASCADE' })
-    @JoinTable()
+    @ManyToMany(() => Usuario, { onDelete: 'CASCADE' , eager:true})
+    @JoinTable({
+        name: "event_user"
+    })
     usuarios : Usuario[] | null
 
     @CreateDateColumn()
