@@ -5,7 +5,7 @@ import 'express-async-errors';
 import {AppDataSource} from './api/shared/typeorm/data-source'
 import routes from "./api/shared/http/routes";
 import AppError from "@modules/errors/AppError";
-import * as redis from 'redis';
+import {BlackListedRedisClient} from "@config/redisConfig";
 
 
 const app = express();
@@ -32,22 +32,6 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 })
 
 
-export const BlackListedRedisClient = redis.createClient({
-    url:'redis://localhost:6379',
-    password:'',
-});
-
-BlackListedRedisClient.on('connect',()=>{
-    console.log(`Redis running on: localhost 6379`)
-})
-
-BlackListedRedisClient.on("error", (err:Error)=>{
-    console.log(err);
-})
-
-
-
-
 //inicializar o banco de dados
 AppDataSource.initialize().then(r => {
     console.log("data source initialized");
@@ -61,5 +45,4 @@ const init = async()=>{
         console.log(`server listening on port: ${3030}`)
     })
 }
-
-init()
+init();
