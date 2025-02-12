@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import UserService from "../service/UserService";
 import EventSubscribe from "../service/EventSubscribe";
+import {BlackListedRedisClient} from "../../../../index";
 
 @injectable()
 export default class UserController {
@@ -65,11 +66,29 @@ export default class UserController {
     }
 
     public async subEvent(req: Request, res: Response) {
-        const idUser = parseInt(req.params.idUser);
+        const idUser = parseInt(req.body.userId);
         const idEvent = parseInt(req.params.idEvent);
+        const id = parseInt(req.params.id);
 
-        const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
+        if (id === idUser) {
+            const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
 
-        return res.json(evento).status(200);
+            await BlackListedRedisClient.hSet('eventos',{
+                'id': evento.id.toString(),
+                'titulo': evento.titulo,
+                'img': evento.img,
+                'status': evento.status.toString(),
+                'descricao': evento.descricao,
+                'dataInicio': evento.dataInicio.toUTCString(),
+                'dataFim': evento.dataFim.toUTCString()
+            })
+
+            const testGet = await BlackListedRedisClient.hGetAll('eventos')
+            console.log(testGet)
+            return res.json(evento).status(200);
+        } else {
+            return res.json('Unauthorized').status(401)
+        }
+
     }
 }
