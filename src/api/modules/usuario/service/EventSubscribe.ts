@@ -28,9 +28,9 @@ export default class EventSubscribe {
             event.usuarios.push(user);
             event.numVagas--;
 
-            return await this.eventoRepository.updateEventoEntity(event).then((res) =>{
-                send(user.email,event.descricao,`A sua inscrição no evento ${event.titulo} foi realizada com sucesso`)
-            });
+            const evento =  await this.eventoRepository.updateEventoEntity(event);
+
+            return evento
         } else {
             throw new AppError("Não há vagas disponíveis", "bad_request");
         }
