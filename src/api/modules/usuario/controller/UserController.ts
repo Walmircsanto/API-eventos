@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import UserService from "../service/UserService";
 import EventSubscribe from "../service/EventSubscribe";
-import {BlackListedRedisClient} from "../../../../index";
+import {BlackListedRedisClient} from "@config/redisConfig";
 
 @injectable()
 export default class UserController {
@@ -73,18 +73,6 @@ export default class UserController {
         if (id === idUser) {
             const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
 
-            await BlackListedRedisClient.hSet('eventos',{
-                'id': evento.id.toString(),
-                'titulo': evento.titulo,
-                'img': evento.img,
-                'status': evento.status.toString(),
-                'descricao': evento.descricao,
-                'dataInicio': evento.dataInicio.toUTCString(),
-                'dataFim': evento.dataFim.toUTCString()
-            })
-
-            const testGet = await BlackListedRedisClient.hGetAll('eventos')
-            console.log(testGet)
             return res.json(evento).status(200);
         } else {
             return res.json('Unauthorized').status(401)
