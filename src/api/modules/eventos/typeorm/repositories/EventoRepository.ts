@@ -1,4 +1,4 @@
-import {Repository} from 'typeorm';
+import {In, Repository} from 'typeorm';
 import IEventoRepository from "../../services/interfaces/IEventoRepository";
 import Evento from "../entities/Evento";
 import {AppDataSource} from "../../../../shared/typeorm/data-source";
@@ -77,7 +77,7 @@ export default class EventoRepository implements IEventoRepository {
         return this.ormRepository.find();
     }
 
-    async updateEvento(eventoRequest: IRequestEvento): Promise<Evento> {
+    async updateEvento(eventoRequest: Evento): Promise<Evento> {
 
         const evento = await this.ormRepository.findOne({
             where: {
@@ -92,10 +92,7 @@ export default class EventoRepository implements IEventoRepository {
             evento.descricao = eventoRequest.descricao;
             evento.dataInicio = eventoRequest.dataInicio;
             evento.dataFim = eventoRequest.dataFim;
-            evento.usuarios = eventoRequest.usuarios
-            for(let i = 0; i < eventoRequest.usuarios.length; i++) {
-                evento.usuarios?.push(eventoRequest.usuarios[i]);
-            }
+            evento.usuarios = eventoRequest.usuarios;
 
             await this.ormRepository.save(evento);
             return evento;
@@ -139,6 +136,14 @@ export default class EventoRepository implements IEventoRepository {
             }
         });
         return evento;
+    }
+
+    async findEventosById( listId: number[]){
+       const eventos = await this.ormRepository.findBy({
+           id: In(listId)
+       });
+
+       return eventos
     }
 
 }
