@@ -3,6 +3,7 @@ import Evento from "../typeorm/entities/Evento";
 import Usuario from "../../usuario/typeorm/entities/Usuario";
 import UserService from "../../usuario/service/UserService";
 import EventoResponse from "../dto/EventResponse";
+import evento from "../typeorm/entities/Evento";
 
 export class EventoMapper {
 
@@ -70,8 +71,8 @@ export class EventoMapper {
         eventoRequest.dataFim = event.dataFim
         eventoRequest.numVagas = event.numVagas
 
-        if (event.usuarios.length) {
-            for (let i = 0; i < evento.usuarios?.length; i++) {
+        if (event.usuarios?.length != null) {
+            for (let i = 0; i < event.usuarios?.length; i++) {
                 eventoRequest.usuariosIds = eventoRequest.usuariosIds || [];
                 eventoRequest.usuariosIds.push( <number>event.usuarios[i].id);
             }
