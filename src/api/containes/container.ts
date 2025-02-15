@@ -7,6 +7,7 @@ import UsersRepository from "../modules/usuario/typeorm/repositories/UserReposit
 import UserService from "../modules/usuario/service/UserService";
 import UserController from "../modules/usuario/controller/UserController";
 import EventSubscribe from "../modules/usuario/service/EventSubscribe";
+import UserEvents from "../modules/usuario/service/UserEvents";
 
 
 //basicamente ta dizendo que quando precisar instancia ou usar uma instancia do eventoRepository e esse containes que vai gerenciar
@@ -21,4 +22,5 @@ container.register('IUserRepository', {useValue: UsersRepository})
 
 container.registerSingleton(UserService);
 container.registerSingleton(EventSubscribe)
+container.registerSingleton(UserEvents)
 export default container
