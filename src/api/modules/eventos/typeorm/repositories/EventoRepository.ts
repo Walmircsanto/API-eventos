@@ -7,7 +7,6 @@ import {EventoMapper} from "../../mapper/EventoMapper";
 import {injectable} from "tsyringe";
 import statusEvento from "../entities/enums/EventoStatus";
 import AppError from "../../../../shared/errors/AppError";
-import usuario from "../../../usuario/typeorm/entities/Usuario";
 import Usuario from "../../../usuario/typeorm/entities/Usuario";
 
 
@@ -144,6 +143,15 @@ export default class EventoRepository implements IEventoRepository {
        });
 
        return eventos
+    }
+
+
+    public async findEventsUser(idUser:number){
+        return await this.ormRepository
+            .createQueryBuilder('evento')
+            .innerJoin('evento.usuarios', 'usuario')
+            .where('usuario.id = :idUser', {idUser})
+            .getMany()
     }
 
 }
