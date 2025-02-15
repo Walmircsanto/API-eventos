@@ -31,9 +31,9 @@ export default class EventSubscribe {
             event.numVagas--;
 
             const evento = await this.eventoRepository.updateEventoEntity(event);
-            this.addEventRedis(evento);
-            send(user.email, 'inscrição no Evento', `Parabens por se increver no evento, 
-            que acontecera entre ${evento.dataInicio.toUTCString()} e ${evento.dataFim.toString()}`)
+            await this.addEventRedis(evento);
+           // send(user.email, 'inscrição no Evento', `Parabens por se increver no evento,
+          //  que acontecera entre ${evento.dataInicio.toUTCString()} e ${evento.dataFim.toString()}`)
 
 
             return evento
