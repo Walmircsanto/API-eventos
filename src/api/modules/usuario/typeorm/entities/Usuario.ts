@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import Evento from "../../../eventos/typeorm/entities/Evento";
 
 @Entity()
 class Usuario{
@@ -28,6 +29,9 @@ class Usuario{
 
     @Column()
     password:string;
+
+    @ManyToMany(()=> Evento,(evento)=> evento.usuarios)
+    eventos:Evento[]| null;
 
     @CreateDateColumn()
     @Exclude()
