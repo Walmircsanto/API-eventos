@@ -1,14 +1,14 @@
 import * as redis from "redis";
 import dotenv from "dotenv";
-export const BlackListedRedisClient = redis.createClient({
+export const RedisClient = redis.createClient({
     url:process.env.REDIS_URL,
     password:'',
 });
 
-BlackListedRedisClient.on('connect',()=>{
+RedisClient.on('connect',()=>{
     console.log(`Redis running on: localhost 6379`)
 })
 
-BlackListedRedisClient.on("error", (err:Error)=>{
+RedisClient.on("error", (err:Error)=>{
     console.log(err);
 })
