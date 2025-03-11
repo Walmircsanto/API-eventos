@@ -1,10 +1,11 @@
 import EventoRequest from "../dto/EventoRequest";
 import Evento from "../typeorm/entities/Evento";
-import Usuario from "../../usuario/typeorm/entities/Usuario";
 import UserService from "../../usuario/service/UserService";
 import EventoResponse from "../dto/EventResponse";
-import evento from "../typeorm/entities/Evento";
+import {injectable} from "tsyringe";
 
+
+@injectable()
 export class EventoMapper {
 
     private userService: UserService;
