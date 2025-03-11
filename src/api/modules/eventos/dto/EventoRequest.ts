@@ -1,4 +1,5 @@
 import statusEvento from "../typeorm/entities/enums/EventoStatus";
+import EventClassification from "../typeorm/entities/enums/EventClassification";
 
 
 export default class EventoRequest {
@@ -14,6 +15,8 @@ export default class EventoRequest {
     status: statusEvento;
 
     descricao:string
+
+    classification: EventClassification
 
     dataInicio: Date;
 

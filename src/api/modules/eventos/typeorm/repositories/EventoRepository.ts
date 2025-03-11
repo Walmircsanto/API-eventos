@@ -43,6 +43,7 @@ export default class EventoRepository implements IEventoRepository {
                                   img,
                                   status,
                                   descricao,
+                                  classification,
                                   dataInicio,
                                   dataFim,
                                   numVagas,
@@ -50,11 +51,12 @@ export default class EventoRepository implements IEventoRepository {
                                   certificadoId
                               }: EventoRequest): Promise<Evento> {
 
-        const event =  await new EventoMapper().parserRequestInEvento({
+        const event = await new EventoMapper().parserRequestInEvento({
             titulo,
             img,
             status,
             descricao,
+            classification,
             dataInicio,
             dataFim,
             numVagas,
@@ -76,7 +78,7 @@ export default class EventoRepository implements IEventoRepository {
         return this.ormRepository.find();
     }
 
-    async updateEvento(eventoRequest: Evento): Promise<Evento> {
+    async updateEvento(eventoRequest: Evento): Promise<void> {
 
         const evento = await this.ormRepository.findOne({
             where: {
@@ -88,13 +90,13 @@ export default class EventoRepository implements IEventoRepository {
             evento.img = eventoRequest.img;
             evento.titulo = eventoRequest.titulo;
             evento.status = eventoRequest.status;
+            evento.classification = eventoRequest.classification;
             evento.descricao = eventoRequest.descricao;
             evento.dataInicio = eventoRequest.dataInicio;
             evento.dataFim = eventoRequest.dataFim;
             evento.usuarios = eventoRequest.usuarios;
 
             await this.ormRepository.save(evento);
-            return evento;
         } else {
             throw new AppError("Event not found", "Bad request", 400);
         }
@@ -114,6 +116,7 @@ export default class EventoRepository implements IEventoRepository {
             evento.id = eventoRequest.id;
             evento.img = eventoRequest.img;
             evento.titulo = eventoRequest.titulo;
+            evento.classification = eventoRequest.classification;
             evento.numVagas = eventoRequest.numVagas;
             evento.status = eventoRequest.status;
             evento.descricao = eventoRequest.descricao;
@@ -138,16 +141,16 @@ export default class EventoRepository implements IEventoRepository {
         return evento;
     }
 
-    async findEventosById( listId: number[]){
-       const eventos = await this.ormRepository.findBy({
-           id: In(listId)
-       });
+    async findEventosById(listId: number[]) {
+        const eventos = await this.ormRepository.findBy({
+            id: In(listId)
+        });
 
-       return eventos
+        return eventos
     }
 
 
-    public async findEventsUser(idUser:number){
+    public async findEventsUser(idUser: number) {
         return await this.ormRepository
             .createQueryBuilder('evento')
             .innerJoin('evento.usuarios', 'usuario')

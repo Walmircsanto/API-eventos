@@ -19,6 +19,7 @@ export class EventoMapper {
         evento.dataInicio = eventRequest.dataInicio
         evento.dataFim = eventRequest.dataFim
         evento.numVagas = eventRequest.numVagas
+        evento.classification = eventRequest.classification
         evento.certificado = null
 
         if (eventRequest.usuariosIds?.length) {
@@ -34,19 +35,7 @@ export class EventoMapper {
         return evento
     }
 
-    public lisMocksUsuario(usuario: number[]) {
 
-        const usuarios = <Usuario[]>[];
-
-        for (let i = 1; i < usuarios.length; i++) {
-            const user = new Usuario();
-            user.id = i;
-
-            usuarios.push(user);
-        }
-
-        return usuario
-    }
 
     public parseEntityToDTO(evento:Evento){
         const eventoResponse = new EventoResponse;
@@ -70,6 +59,7 @@ export class EventoMapper {
         eventoRequest.dataInicio = event.dataInicio
         eventoRequest.dataFim = event.dataFim
         eventoRequest.numVagas = event.numVagas
+        eventoRequest.classification = event.classification
 
         if (event.usuarios?.length != null) {
             for (let i = 0; i < event.usuarios?.length; i++) {

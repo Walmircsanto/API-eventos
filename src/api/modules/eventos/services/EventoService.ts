@@ -24,6 +24,7 @@ export class EventoService {
                                  img,
                                  status,
                                  descricao,
+                                 classification,
                                  dataInicio,
                                  dataFim,
                                  numVagas,
@@ -37,6 +38,7 @@ export class EventoService {
                 img,
                 status,
                 descricao,
+                classification,
                 dataInicio,
                 dataFim,
                 numVagas,
@@ -55,6 +57,8 @@ export class EventoService {
         if (!evento) {
             throw new AppError("Event not foud", "Bad request", 400);
         }
+
+
 
         return evento;
 
