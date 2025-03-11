@@ -10,6 +10,7 @@ import { Exclude } from 'class-transformer';
 import statusEvento from "./enums/EventoStatus";
 import Usuario from "../../../usuario/typeorm/entities/Usuario";
 import Certificado from "../../../certificado/typeorm/entities/Certificado";
+import EventClassification from "./enums/EventClassification";
 
 @Entity()
 class Evento {
@@ -32,6 +33,16 @@ class Evento {
 
     @Column()
     descricao:string
+
+    @Column(
+        {
+            type:"enum",
+            enum:EventClassification,
+            default: EventClassification.INICIOU_AGORA
+        }
+    )
+    classification: EventClassification;
+
 
     @Column()
     numVagas: number

@@ -5,7 +5,7 @@ import AppError from "@modules/errors/AppError";
 import EventoRepository from "../../eventos/typeorm/repositories/EventoRepository";
 import send from "../../email/service/SendEmail";
 import Evento from "../../eventos/typeorm/entities/Evento";
-import {BlackListedRedisClient} from "@config/redisConfig";
+import {RedisClient} from "@config/redisConfig";
 
 
 @injectable()
@@ -32,8 +32,11 @@ export default class EventSubscribe {
 
             const evento = await this.eventoRepository.updateEventoEntity(event);
             await this.addEventRedis(evento);
-           // send(user.email, 'inscrição no Evento', `Parabens por se increver no evento,
-          //  que acontecera entre ${evento.dataInicio.toUTCString()} e ${evento.dataFim.toString()}`)
+            // send(user.email, 'inscrição no Evento', `Parabens por se increver no evento,
+            //  que acontecera entre ${evento.dataInicio.toUTCString()} e ${evento.dataFim.toString()}`)
+            const redisData = await RedisClient.hGetAll('evento'+ evento.id);
+            console.log(redisData)
+
 
 
             return evento
@@ -45,7 +48,7 @@ export default class EventSubscribe {
     }
 
     private async addEventRedis(evento: Evento): Promise<void> {
-        await BlackListedRedisClient.hSet('eventos' + evento.id, {
+        await RedisClient.hSet('evento' + evento.id, {
             'id': evento.id.toString(),
             'titulo': evento.titulo,
             'img': evento.img,

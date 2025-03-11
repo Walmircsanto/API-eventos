@@ -114,6 +114,7 @@ export default class EventoRepository implements IEventoRepository {
             evento.id = eventoRequest.id;
             evento.img = eventoRequest.img;
             evento.titulo = eventoRequest.titulo;
+            evento.numVagas = eventoRequest.numVagas;
             evento.status = eventoRequest.status;
             evento.descricao = eventoRequest.descricao;
             evento.dataInicio = eventoRequest.dataInicio;

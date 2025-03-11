@@ -5,7 +5,7 @@ import 'express-async-errors';
 import {AppDataSource} from './api/shared/typeorm/data-source'
 import routes from "./api/shared/http/routes";
 import AppError from "@modules/errors/AppError";
-import {BlackListedRedisClient} from "@config/redisConfig";
+import {RedisClient} from "@config/redisConfig";
 
 
 const app = express();
@@ -40,7 +40,7 @@ AppDataSource.initialize().then(r => {
 });
 
 const init = async()=>{
-    await BlackListedRedisClient.connect()
+    await RedisClient.connect()
     app.listen(3030, () => {
         console.log(`server listening on port: ${3030}`)
     })
