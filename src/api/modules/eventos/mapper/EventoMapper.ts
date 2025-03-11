@@ -26,9 +26,9 @@ export class EventoMapper {
         if (eventRequest.usuariosIds?.length) {
             for (let i = 0; i < eventRequest.usuariosIds?.length; i++) {
                 evento.usuarios = evento.usuarios || [];
-                evento.usuarios.push( await this.userService.findUserById(i));
+                evento.usuarios.push(await this.userService.findUserById(i));
             }
-        } else{
+        } else {
             evento.usuarios = null;
         }
 
@@ -37,8 +37,7 @@ export class EventoMapper {
     }
 
 
-
-    public parseEntityToDTO(evento:Evento){
+    public parseEntityToDTO(evento: Evento) {
         const eventoResponse = new EventoResponse;
         eventoResponse.id = evento.id;
         eventoResponse.img = evento.img;
@@ -51,7 +50,18 @@ export class EventoMapper {
         return eventoResponse;
     }
 
-    public async parserEntityToRequestDTO(event: Evento){
+
+    public parseGetAllEntityToDTO(evento: Evento[]) {
+        const eventoResponse: EventoResponse[] = [];
+
+        evento.map((evento: Evento) => {
+            eventoResponse.push(this.parseEntityToDTO(evento))
+        });
+
+        return eventoResponse
+    }
+
+    public async parserEntityToRequestDTO(event: Evento) {
         const eventoRequest = new EventoRequest();
         eventoRequest.id = <number>event.id;
         eventoRequest.img = event.img;
@@ -65,9 +75,9 @@ export class EventoMapper {
         if (event.usuarios?.length != null) {
             for (let i = 0; i < event.usuarios?.length; i++) {
                 eventoRequest.usuariosIds = eventoRequest.usuariosIds || [];
-                eventoRequest.usuariosIds.push( <number>event.usuarios[i].id);
+                eventoRequest.usuariosIds.push(<number>event.usuarios[i].id);
             }
-        } else{
+        } else {
             eventoRequest.usuariosIds = null;
         }
 
