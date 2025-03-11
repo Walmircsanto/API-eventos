@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import UserController from "../controller/UserController";
-import container from "../../../containes/container";
+import container from "../../../containes/containerUser";
 import userAuthenticated from "../middlewares/UserAuthenticated";
 const userRoutes = Router();
 const userController = container.resolve(UserController) //obter a instancia do UserController;
