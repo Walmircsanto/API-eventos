@@ -2,12 +2,14 @@ import {Request, Response} from 'express';
 import {inject, injectable} from "tsyringe";
 import UserService from "../service/UserService";
 import EventSubscribe from "../service/EventSubscribe";
+import UserEvents from "../service/UserEvents";
 
 @injectable()
 export default class UserController {
 
     constructor(@inject(UserService) private readonly userService: UserService,
-                @inject(EventSubscribe) private readonly subscribeEvent: EventSubscribe) {
+                @inject(EventSubscribe) private readonly subscribeEvent: EventSubscribe,
+                @inject(UserEvents) private readonly userEvents: UserEvents) {
     }
 
     public async creatUser(req: Request, res: Response) {
@@ -65,11 +67,31 @@ export default class UserController {
     }
 
     public async subEvent(req: Request, res: Response) {
-        const idUser = parseInt(req.params.idUser);
+        const idUser = parseInt(req.body.userId);
         const idEvent = parseInt(req.params.idEvent);
+        const id = parseInt(req.params.id);
 
-        const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
+        if (id === idUser) {
+            const evento = await this.subscribeEvent.subscribeEvent(idEvent, idUser);
 
-        return res.json(evento).status(200);
+            return res.json(evento).status(200);
+        } else {
+            return res.json('Unauthorized').status(401)
+        }
+
+    }
+
+    public async findEventsUser(req:Request, res:Response){
+        const idUser = parseInt(req.body.userId);
+        const userParamId = parseInt(req.params.userParamId);
+
+        console.log(userParamId)
+        if(idUser === userParamId){
+            const evento = await this.userEvents.findEventsUser(idUser);
+
+            return res.json(evento).status(200);
+        }
+        return res.json('Unauthorized').status(401)
+
     }
 }

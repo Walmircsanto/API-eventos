@@ -5,12 +5,15 @@ import 'express-async-errors';
 import {AppDataSource} from './api/shared/typeorm/data-source'
 import routes from "./api/shared/http/routes";
 import AppError from "@modules/errors/AppError";
+import {RedisClient} from "@config/redisConfig";
 
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+
 
 app.use('/api', routes); // estou indicando que meu servidor vai usar essas rotas
 
@@ -28,6 +31,7 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     });
 })
 
+
 //inicializar o banco de dados
 AppDataSource.initialize().then(r => {
     console.log("data source initialized");
@@ -35,6 +39,10 @@ AppDataSource.initialize().then(r => {
     console.log(err);
 });
 
-app.listen(3030, () => {
-    console.log("Server is running on port 3000");
-})
+const init = async()=>{
+    await RedisClient.connect()
+    app.listen(3030, () => {
+        console.log(`server listening on port: ${3030}`)
+    })
+}
+init();

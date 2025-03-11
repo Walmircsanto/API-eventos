@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import UserController from "../controller/UserController";
-import container from "../../../containes/container";
+import container from "../../../containes/containerUser";
 import userAuthenticated from "../middlewares/UserAuthenticated";
 const userRoutes = Router();
 const userController = container.resolve(UserController) //obter a instancia do UserController;
@@ -12,5 +12,6 @@ userRoutes.get('/:id', userAuthenticated, userController.finByIdUser.bind(userCo
 userRoutes.get('/', userController.findAllUsers.bind(userController));
 userRoutes.delete('/:id', userController.deleteUser.bind(userController));
 userRoutes.post('/session', userController.sessionUser.bind(userController));
-userRoutes.post('/:idUser/:idEvent',userController.subEvent.bind(userController) )
+userRoutes.post('/:id/:idEvent',userAuthenticated, userController.subEvent.bind(userController) );
+userRoutes.get('/:userParamId/events', userAuthenticated, userController.findEventsUser.bind(userController) )
 export default userRoutes;
