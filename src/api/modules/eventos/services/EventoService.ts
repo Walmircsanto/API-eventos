@@ -16,7 +16,7 @@ interface IRequestIMGEvent {
 @injectable() // indica que a nossa classe recebe a injeção de dependencia
 export class EventoService {
 
-    constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository) {
+    constructor(@inject(EventoRepository) private readonly eventoRepository: EventoRepository, @inject(EventoMapper) private readonly eventoMapper: EventoMapper) {
     }
 
     public async createEvent({
@@ -60,7 +60,8 @@ export class EventoService {
 
 
 
-        return evento;
+      return   this.eventoMapper.parseEntityToDTO(evento)
+
 
 
     }
@@ -72,7 +73,7 @@ export class EventoService {
     }
 
     public async createAvatarService({id, imgFileName}: IRequestIMGEvent) {
-        const evento = await this.findById(id);
+        const evento = await this.eventoRepository.findEventoById(id);
 
         if (!evento) {
             throw new AppError("Evento not found", "Bad request", 400);
