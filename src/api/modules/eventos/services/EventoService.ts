@@ -69,7 +69,7 @@ export class EventoService {
     public async findAllEventos() {
         const eventos = await this.eventoRepository.listEventos();
 
-        return eventos;
+       return this.eventoMapper.parseGetAllEntityToDTO(eventos);
     }
 
     public async createAvatarService({id, imgFileName}: IRequestIMGEvent) {
